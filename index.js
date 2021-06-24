@@ -1,14 +1,26 @@
 require('dotenv').config()
 
-const { Telegraf } = require('telegraf');
-const { getNumberOfWeek } = require('./utils');
+const {Telegraf} = require('telegraf');
+const {Client} = require('pg');
+
+const {getNumberOfWeek} = require('./utils');
+const {db} = require('./db');
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const PORT = process.env.PORT;
-const URL = process.env.HEROKU_URL;
 
-bot.telegram.setWebhook(`${URL}/bot${process.env.BOT_TOKEN}`);
-bot.startWebhook(`/bot${process.env.BOT_TOKEN}`, null, PORT);
+bot.telegram.setWebhook(`${process.env.HEROKU_URL}/bot${process.env.BOT_TOKEN}`);
+bot.startWebhook(`/bot${process.env.BOT_TOKEN}`, null, process.env.PORT);
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+        rejectUnauthorized: false
+    }
+});
+
+client.connect();
+
+db(client, bot);
 
 const weeks = [
     'Nastassia',
