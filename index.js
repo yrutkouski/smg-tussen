@@ -11,11 +11,13 @@ bot.telegram.setWebhook(`${URL}/bot${process.env.BOT_TOKEN}`);
 bot.startWebhook(`/bot${process.env.BOT_TOKEN}`, null, PORT);
 
 const weeks = [
+    'Anton + Pan',
     'Nastassia',
     'Olia + Pasha',
     'Volodya + Ira',
-    'Chechen + Viktar',
-    'Anton + Pan'
+    'Chechen',
+    'Shooters',
+    'Viktar',
 ];
 
 bot.start(ctx => ctx.reply('Welcome'));
