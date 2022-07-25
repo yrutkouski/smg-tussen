@@ -12,12 +12,13 @@ bot.startWebhook(`/bot${process.env.BOT_TOKEN}`, null, PORT);
 
 const weeks = [
     'Olia + Pasha',
-    'Anton + Pan',
+    'Anton',
     'Chechen',
     'Viktar',
     'Shooters',
-    'Nastassia',
+    'Nastassia + Stan(s)',
     'Volodya + Ira',
+    'Pan + Jul',
 ];
 
 bot.start(ctx => ctx.reply('Welcome'));
