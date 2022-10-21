@@ -19,6 +19,7 @@ const weeks = [
     'Nastassia + Stan(s)',
     'Volodya + Ira',
     'Pan + Jul',
+    'Liza',
 ];
 
 bot.start(ctx => ctx.reply('Welcome'));
