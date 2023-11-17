@@ -1,14 +1,8 @@
-require('dotenv').config()
+import { Telegraf } from 'telegraf';
+import { getNumberOfWeek } from './utils.js';
+const { BOT_TOKEN, WEBHOOK } = process.env;
 
-const { Telegraf } = require('telegraf');
-const { getNumberOfWeek } = require('./utils');
-
-const bot = new Telegraf(process.env.BOT_TOKEN);
-const PORT = process.env.PORT;
-const URL = process.env.HEROKU_URL;
-
-bot.telegram.setWebhook(`${URL}/bot${process.env.BOT_TOKEN}`);
-bot.startWebhook(`/bot${process.env.BOT_TOKEN}`, null, PORT);
+const bot = new Telegraf(BOT_TOKEN);
 
 const weeks = [
     'Olia + Pasha',
@@ -20,9 +14,8 @@ const weeks = [
     'Volodya + Ira',
     'Pan + Jul',
     'Liza',
+    'Max + Masha',
 ];
-
-bot.start(ctx => ctx.reply('Welcome'));
 
 bot.command('pyatnichnaya', ctx => {
     const key = getNumberOfWeek() % weeks.length;
@@ -36,8 +29,15 @@ bot.command('raspisanie', ctx => {
 
 bot.command('beer', ctx => ctx.reply('🍻'));
 
-bot.launch();
+bot.telegram.setWebhook(WEBHOOK);
 
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+export const webhook = async (req, res) => {
+    const updates = req.body;
+    try {
+        await bot.handleUpdate(updates);
+        res.status(200).send('OK');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error');
+    }
+};

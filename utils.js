@@ -1,4 +1,4 @@
-module.exports.getNumberOfWeek = () => {
+export const getNumberOfWeek = () => {
     const today = new Date();
     const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
     const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
