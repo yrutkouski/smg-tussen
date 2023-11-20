@@ -27,7 +27,7 @@ bot.command('raspisanie', ctx => ctx.reply(weeks.join('\n')));
 
 bot.command('piva', ctx => ctx.reply('🍻'));
 
-bot.command('pishu', ctx => ctx.message.text);
+bot.command('pishu', ctx => ctx.reply(ctx.message.text));
 
 bot.telegram.setWebhook(WEBHOOK);
 
