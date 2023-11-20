@@ -23,11 +23,11 @@ bot.command('pyatnichnaya', ctx => {
     return ctx.reply(weeks[key]);
 });
 
-bot.command('raspisanie', ctx => {
-    return ctx.reply(weeks.join('\n'));
-});
+bot.command('raspisanie', ctx => ctx.reply(weeks.join('\n')));
 
-bot.command('beer', ctx => ctx.reply('🍻'));
+bot.command('piva', ctx => ctx.reply('🍻'));
+
+bot.command('pishu', ctx => ctx.message.text);
 
 bot.telegram.setWebhook(WEBHOOK);
 
