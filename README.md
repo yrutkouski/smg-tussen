@@ -1,2 +1,3 @@
 # smg-tussen
-SMG TUSSEN
+
+Telegram chat bot
