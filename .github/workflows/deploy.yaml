@@ -1,4 +1,4 @@
-name: deploy cloud function
+name: Deploy Cloud Function
 
 on:
   push:
@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: 'actions/checkout@v4'
+      - name: Checkout
+        uses: 'actions/checkout@v4'
     
-      - id: 'auth'
+      - name: Auth
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
@@ -20,7 +21,7 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
-      - name: deploy cloud function
+      - name: Deploy GCF
         run: |
           gcloud functions deploy smg-tussen \
             --gen2 \
@@ -29,16 +30,3 @@ jobs:
             --allow-unauthenticated \
             --entry-point webhook \
             --region europe-west1
-
-      - name: Set Deployment Status
-        run: |
-          DEPLOYMENT_ID=$(curl -s -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
-          -H "Accept: application/vnd.github.ant-man-preview+json" \
-          "https://api.github.com/repos/${{ github.repository }}/deployments" \
-          | jq -r '.[0].id')
-
-          curl -s -X POST -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
-          -H "Accept: application/vnd.github.ant-man-preview+json" \
-          -d '{"state": "success", "log_url": "${{ github.run_url }}", "description": "Deployment successful"}' \
-          "https://api.github.com/repos/${{ github.repository }}/deployments/${DEPLOYMENT_ID}/statuses"
-        shell: bash
