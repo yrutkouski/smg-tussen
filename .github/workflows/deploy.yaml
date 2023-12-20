@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -21,12 +22,20 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
 
+      - name: Build project
+        run: |
+          npm ci
+          npm run build
+
       - name: Deploy GCF
         run: |
-          gcloud functions deploy smg-tussen \
+          gcloud functions deploy TelegramWebhook \
             --gen2 \
             --runtime nodejs20 \
             --trigger-http \
             --allow-unauthenticated \
-            --entry-point webhook \
+            --entry-point TelegramWebhook \
             --region europe-west1
+
+      - name: Clean up temporary files
+        run: rm -rf dist

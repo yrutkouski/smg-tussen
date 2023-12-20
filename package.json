@@ -1,11 +1,13 @@
 {
   "name": "smg-tussen",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "SMG TUSSEN",
-  "main": "index.js",
-  "type": "module",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node index.js"
+    "build": "tsc",
+    "start": "functions-framework --target=TelegramWebhook",
+    "prestart": "npm run build",
+    "gcp-build": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -14,7 +16,11 @@
   "author": "yrutkouski",
   "license": "ISC",
   "dependencies": {
-    "@google-cloud/functions-framework": "^3.0.0",
-    "telegraf": "4.15.0"
+    "@google-cloud/functions-framework": "3.3.0",
+    "telegraf": "4.15.3"
+  },
+  "devDependencies": {
+    "dotenv": "16.3.1",
+    "typescript": "5.3.3"
   }
 }
