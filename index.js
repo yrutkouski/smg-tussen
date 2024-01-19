@@ -27,7 +27,11 @@ bot.command('raspisanie', ctx => ctx.reply(weeks.join('\n')));
 
 bot.command('piva', ctx => ctx.reply('🍻'));
 
-bot.command('pishu', ctx => ctx.reply(ctx.message.text));
+bot.command('pishu', ctx => {
+    const message = ctx.message.text.replace(/^\/(\w+) /, '');
+
+    return ctx.reply(message);
+});
 
 bot.telegram.setWebhook(WEBHOOK);
 
