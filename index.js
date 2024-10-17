@@ -40,7 +40,8 @@ bot.command('pishu', ctx => {
 });
 
 bot.command('poll', async (ctx) => {
-    const channelId = ctx.channelPost.chat.id;
+    console.log('CTX:', JSON.stringify(ctx, null, 2));
+    const channelId = ctx.chat?.id || ctx.channelPost?.chat?.id;
 
     try {
         await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
