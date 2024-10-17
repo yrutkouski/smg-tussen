@@ -6,7 +6,6 @@ const bot = new Telegraf(BOT_TOKEN);
 
 const weeks = [
     'Olia + Pasha',
-    'Anton',
     'Chechen',
     'Viktar',
     'Shooters',
@@ -16,6 +15,13 @@ const weeks = [
     'Liza',
     'Max + Masha',
 ];
+
+const pollOptions = {
+  question: '???',
+  options: ['+++', '---'],
+  is_anonymous: false,
+  allows_multiple_answers: false,
+};
 
 bot.command('pyatnichnaya', ctx => {
     const key = getNumberOfWeek() % weeks.length;
@@ -31,6 +37,21 @@ bot.command('pishu', ctx => {
     const message = ctx.message.text.replace(/^\/(\w+) /, '');
 
     return ctx.reply(message);
+});
+
+bot.command('poll', async (ctx) => {
+    const channelId = ctx.channelPost.chat.id;
+
+    try {
+        await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
+            is_anonymous: pollOptions.is_anonymous,
+            allows_multiple_answers: pollOptions.allows_multiple_answers,
+        });
+        ctx.reply('GOLOSOVANIE');
+    } catch (error) {
+        console.error('Error sending poll:', error);
+        ctx.reply('Failed to send poll.');
+    }
 });
 
 bot.telegram.setWebhook(WEBHOOK);
