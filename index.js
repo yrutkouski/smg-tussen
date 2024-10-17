@@ -39,16 +39,14 @@ bot.command('pishu', ctx => {
     return ctx.reply(message);
 });
 
-bot.command('poll', async (ctx) => {
-    console.log('CTX:', JSON.stringify(ctx, null, 2));
-    const channelId = ctx.chat?.id || ctx.channelPost?.chat?.id;
-
+bot.command('golosovanie', async (ctx) => {
     try {
+        const channelId = ctx.chat?.id;
+        ctx.reply(`${ctx.message?.from?.first_name} ${ctx.message?.from?.username} started GOLOSOVANIE`);
         await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
             is_anonymous: pollOptions.is_anonymous,
             allows_multiple_answers: pollOptions.allows_multiple_answers,
         });
-        ctx.reply('GOLOSOVANIE');
     } catch (error) {
         console.error('Error sending poll:', error);
         ctx.reply('Failed to send poll.');
