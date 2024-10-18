@@ -13,14 +13,25 @@ jobs:
     steps:
       - name: Checkout
         uses: 'actions/checkout@v4'
-    
+
+      - name: Set up Node.js
+        uses: 'actions/setup-node@v2'
+        with:
+          node-version: '20'
+
       - name: Auth
         uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Set up Google Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build TypeScript
+        run: npm run build
 
       - name: Deploy GCF
         run: |
