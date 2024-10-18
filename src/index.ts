@@ -5,7 +5,7 @@ import { Request, Response } from '@google-cloud/functions-framework';
 import { weeks, pollOptions } from './constants.js';
 import { getNumberOfWeek } from './utils.js';
 
-const { BOT_TOKEN, WEBHOOK } = process.env;
+const { BOT_TOKEN, WEBHOOK, SMG_CHANNEL_ID } = process.env;
 
 const bot = new Telegraf(BOT_TOKEN!);
 
@@ -21,18 +21,21 @@ bot.command('piva', (ctx: Context) => ctx.reply('🍻'));
 
 bot.command('golosovanie', async (ctx: Context) => {
     try {
-        const channelId = ctx.chat?.id;
+        let channelId: string | number = ctx.chat?.id!;
 
         if (channelId) {
-            await ctx.reply(`${ctx.message?.from?.first_name} ${ctx.message?.from?.username} started GOLOSOVANIE`);
-
-            await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
-                is_anonymous: pollOptions.is_anonymous,
-                allows_multiple_answers: pollOptions.allows_multiple_answers,
-            });
+            await ctx.reply(`@${ctx.message?.from?.username} started GOLOSOVANIE`);
         } else {
-            throw new Error('channelId is empty');
+            channelId = SMG_CHANNEL_ID!;
+            await ctx.reply(`Friday GOLOSOVANIE`);
         }
+
+        await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
+            is_anonymous: pollOptions.is_anonymous,
+            allows_multiple_answers: pollOptions.allows_multiple_answers,
+        }).catch(e => {
+            throw new Error(e)
+        });
     } catch (error) {
         console.error('Error sending poll:', error);
         await ctx.reply('Failed to send poll.');
