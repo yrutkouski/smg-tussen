@@ -34,6 +34,12 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
+      - name: List contents
+        run: ls -R
+      
+      - name: List contents of dist folder
+        run: ls -R dist
+
       - name: Deploy GCF
         run: |
           gcloud functions deploy smg-tussen \
