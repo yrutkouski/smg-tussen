@@ -15,9 +15,5 @@
 .github
 
 gha-creds-*.json
-
-src
-tsconfig.json
-package-lock.json
 node_modules
 README.md
