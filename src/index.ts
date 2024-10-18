@@ -21,13 +21,12 @@ bot.command('piva', (ctx: Context) => ctx.reply('🍻'));
 
 bot.command('golosovanie', async (ctx: Context) => {
     try {
-        let channelId: string | number = ctx.chat?.id!;
+        let channelId = ctx.chat?.id!;
 
-        if (channelId) {
-            await ctx.reply(`@${ctx.message?.from?.username} started GOLOSOVANIE`);
-        } else {
-            channelId = SMG_CHANNEL_ID!;
+        if (`${channelId}` === SMG_CHANNEL_ID && ctx.msgId === 0) {
             await ctx.reply(`Friday GOLOSOVANIE`);
+        } else {
+            await ctx.reply(`@${ctx.message?.from?.username} started GOLOSOVANIE`);
         }
 
         await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
