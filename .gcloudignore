@@ -12,10 +12,9 @@
 # below:
 .git
 .gitignore
+.github
+
+gha-creds-*.json
 
 node_modules
-src
-gha-creds-*.json
-.github
 README.md
-tsconfig.json
