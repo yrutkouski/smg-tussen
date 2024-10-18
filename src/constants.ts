@@ -1,4 +1,4 @@
-export const weeks = [
+const weeks = [
     'Olia + Pasha',
     'Chechen',
     'Viktar',
@@ -10,9 +10,11 @@ export const weeks = [
     'Max + Masha',
 ];
 
-export const pollOptions = {
+const pollOptions = {
     question: '???',
     options: ['+++', '---'],
     is_anonymous: false,
     allows_multiple_answers: false,
 };
+
+export { weeks, pollOptions };

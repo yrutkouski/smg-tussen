@@ -2,8 +2,8 @@ import { Telegraf, Context } from 'telegraf';
 import { Update } from '@telegraf/types';
 import { Request, Response } from '@google-cloud/functions-framework';
 
-import { getNumberOfWeek } from './utils';
-import { weeks, pollOptions } from './constants';
+import { weeks, pollOptions } from './constants.js';
+import { getNumberOfWeek } from './utils.js';
 
 const { BOT_TOKEN, WEBHOOK } = process.env;
 
