@@ -34,6 +34,10 @@ jobs:
       - name: Build TypeScript
         run: npm run build
 
+      - name: Package the function
+        run: |
+          zip -r function.zip dist package.json package-lock.json
+
       - name: Deploy GCF
         run: |
           gcloud functions deploy smg-tussen \
@@ -43,4 +47,4 @@ jobs:
             --allow-unauthenticated \
             --entry-point webhook \
             --region europe-west1 \
-            --no-cloud-build
+            --source ./function.zip
