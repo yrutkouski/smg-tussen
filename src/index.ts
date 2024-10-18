@@ -43,6 +43,7 @@ bot.telegram.setWebhook(WEBHOOK!);
 
 export const webhook = async (req: Request, res: Response) => {
     const updates: Update = req.body;
+    console.log(JSON.stringify(updates, null, 2));
     try {
         await bot.handleUpdate(updates);
         res.status(200).send('OK');
