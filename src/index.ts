@@ -21,7 +21,7 @@ bot.command('piva', (ctx: Context) => ctx.reply('🍻'));
 
 bot.command('golosovanie', async (ctx: Context) => {
     try {
-        let channelId = ctx.chat?.id!;
+        const channelId = ctx.chat?.id!;
 
         if (`${channelId}` === SMG_CHANNEL_ID && ctx.msgId === 0) {
             await ctx.reply(`Friday GOLOSOVANIE`);
@@ -33,7 +33,7 @@ bot.command('golosovanie', async (ctx: Context) => {
             is_anonymous: pollOptions.is_anonymous,
             allows_multiple_answers: pollOptions.allows_multiple_answers,
         }).catch(e => {
-            throw new Error(e)
+            throw new Error(e);
         });
     } catch (error) {
         console.error('Error sending poll:', error);
@@ -41,11 +41,13 @@ bot.command('golosovanie', async (ctx: Context) => {
     }
 });
 
-bot.telegram.setWebhook(WEBHOOK!);
+bot.telegram.setWebhook(WEBHOOK!, {
+    allowed_updates: ['message']
+});
 
 export const webhook = async (req: Request, res: Response) => {
     const updates: Update = req.body;
-    console.log(JSON.stringify(updates, null, 2));
+
     try {
         await bot.handleUpdate(updates);
         res.status(200).send('OK');
