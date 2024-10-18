@@ -43,3 +43,4 @@ jobs:
             --allow-unauthenticated \
             --entry-point webhook \
             --region europe-west1
+            --source dist
