@@ -15,5 +15,7 @@
 .github
 
 gha-creds-*.json
-node_modules
+tsconfig.json
+src/
+node_modules/
 README.md
