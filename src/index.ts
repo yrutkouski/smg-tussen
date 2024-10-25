@@ -5,7 +5,7 @@ import { Request, Response } from '@google-cloud/functions-framework';
 import { weeks, pollOptions } from './constants.js';
 import { getNumberOfWeek } from './utils.js';
 
-const { BOT_TOKEN, WEBHOOK, SMG_CHANNEL_ID, X_TOKEN } = process.env;
+const { BOT_TOKEN, WEBHOOK, SMG_CHANNEL_ID, X_TOKEN, X_HEADER } = process.env;
 
 const bot = new Telegraf(BOT_TOKEN!);
 
@@ -56,7 +56,7 @@ bot.telegram.setWebhook(WEBHOOK!, {
 export const webhook = async (req: Request, res: Response): Promise<Response<string>> => {
     console.log(JSON.stringify(req.headers, null, 2));
 
-    if (req.headers['X-Telegram-Bot-Api-Secret-Token'] !== X_TOKEN) {
+    if (req.headers[X_HEADER!] !== X_TOKEN) {
         return res.status(403).send('Not authorized');
     }
 
