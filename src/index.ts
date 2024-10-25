@@ -22,12 +22,18 @@ bot.command('piva', (ctx: Context) => ctx.reply('🍻'));
 bot.command('golosovanie', async (ctx: Context) => {
     try {
         const channelId = ctx.chat?.id!;
-        console.log(ctx);
+        console.log(ctx.msgId);
 
-        if (`${channelId}` === SMG_CHANNEL_ID && ctx.msgId === 0) {
+        if (String(channelId) === String(SMG_CHANNEL_ID) && ctx.msgId === 0) {
             await ctx.reply(`Friday GOLOSOVANIE`);
         } else {
-            await ctx.reply(`@${ctx.message?.from?.username} started GOLOSOVANIE`);
+            const username = ctx.message?.from?.username;
+            const firstName = ctx.message?.from?.first_name;
+            const userDisplayName = username ? `@${username}` : firstName;
+
+            const message = `${userDisplayName} started GOLOSOVANIE`;
+
+            await ctx.reply(message);
         }
 
         await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
@@ -45,19 +51,23 @@ bot.command('golosovanie', async (ctx: Context) => {
 bot.telegram.setWebhook(WEBHOOK!, {
     allowed_updates: ['message'],
     secret_token: X_TOKEN,
-});
+}).then(r => console.log('setWebhook ', r));
 
-export const webhook = async (req: Request, res: Response) => {
+export const webhook = async (req: Request, res: Response): Promise<Response<string>> => {
+    console.log(JSON.stringify(req.headers, null, 2));
+
     if (req.headers['X-Telegram-Bot-Api-Secret-Token'] !== X_TOKEN) {
-        res.status(403).send('Not authorized');
+        return res.status(403).send('Not authorized');
     }
 
     try {
         const updates: Update = req.body;
         await bot.handleUpdate(updates);
-        res.status(200).send('OK');
+
+        return res.status(200).send('OK');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error');
+
+        return res.status(500).send('Error');
     }
 };
