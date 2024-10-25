@@ -22,7 +22,8 @@ bot.command('piva', (ctx: Context) => ctx.reply('🍻'));
 bot.command('golosovanie', async (ctx: Context) => {
     try {
         const channelId = ctx.chat?.id!;
-        console.log(ctx.msgId);
+        console.log('msg ', ctx.msgId);
+        console.log('message', ctx.message);
 
         if (String(channelId) === String(SMG_CHANNEL_ID) && ctx.msgId === 0) {
             await ctx.reply(`Friday GOLOSOVANIE`);
@@ -54,8 +55,6 @@ bot.telegram.setWebhook(WEBHOOK!, {
 }).then(r => console.log('setWebhook ', r));
 
 export const webhook = async (req: Request, res: Response): Promise<Response<string>> => {
-    console.log(JSON.stringify(req.headers, null, 2));
-
     if (req.headers[X_HEADER!] !== X_TOKEN) {
         return res.status(403).send('Not authorized');
     }
