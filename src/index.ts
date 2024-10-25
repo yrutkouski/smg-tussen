@@ -5,7 +5,13 @@ import { Request, Response } from '@google-cloud/functions-framework';
 import { weeks, pollOptions } from './constants.js';
 import { getNumberOfWeek } from './utils.js';
 
-const { BOT_TOKEN, WEBHOOK, SMG_CHANNEL_ID, X_TOKEN, X_HEADER } = process.env;
+const {
+    BOT_TOKEN,
+    WEBHOOK,
+    SMG_CHANNEL_ID,
+    X_TOKEN,
+    X_HEADER
+} = process.env;
 
 const bot = new Telegraf(BOT_TOKEN!);
 
@@ -22,8 +28,6 @@ bot.command('piva', (ctx: Context) => ctx.reply('🍻'));
 bot.command('golosovanie', async (ctx: Context) => {
     try {
         const channelId = ctx.chat?.id!;
-        console.log('msg ', ctx.msgId);
-        console.log('message', ctx.message);
 
         if (String(channelId) === String(SMG_CHANNEL_ID) && ctx.msgId === 0) {
             await ctx.reply(`Friday GOLOSOVANIE`);
@@ -44,7 +48,8 @@ bot.command('golosovanie', async (ctx: Context) => {
             throw new Error(e);
         });
     } catch (error) {
-        console.error('Error sending poll:', error);
+        console.error('Error poll: ', JSON.stringify(error, null, 2));
+
         await ctx.reply('Failed to send poll.');
     }
 });
@@ -65,7 +70,7 @@ export const webhook = async (req: Request, res: Response): Promise<Response<str
 
         return res.status(200).send('OK');
     } catch (error) {
-        console.error(error);
+        console.error('Error webhook: ', JSON.stringify(error, null, 2));
 
         return res.status(500).send('Error');
     }
