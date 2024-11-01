@@ -41,11 +41,9 @@ bot.command('golosovanie', async (ctx: Context) => {
             await ctx.reply(message);
         }
 
-        console.log(JSON.stringify(ctx.message, null, 2));
-        // @ts-ignore
-        console.log(ctx.message.text.replace(/^\\golosovanie\s*/, '').trim())
+        const question = ctx.text?.replace(/^\golosovanie\s*/, '').trim() ?? pollOptions.question;
 
-        await ctx.telegram.sendPoll(channelId, pollOptions.question, pollOptions.options, {
+        await ctx.telegram.sendPoll(channelId, question, pollOptions.options, {
             is_anonymous: pollOptions.is_anonymous,
             allows_multiple_answers: pollOptions.allows_multiple_answers,
         }).catch(e => {
