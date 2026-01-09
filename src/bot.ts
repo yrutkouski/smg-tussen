@@ -28,13 +28,13 @@ bot.command('golosovanie', async (ctx: Context) => {
             return;
         }
 
-        if (String(channelId) === String(SMG_CHANNEL_ID) && ctx.message?.message_id === 0) {
+        const username = ctx.message?.from?.username;
+        const firstName = ctx.message?.from?.first_name;
+        
+        if (String(channelId) === String(SMG_CHANNEL_ID) && !(username && firstName)) {
             await ctx.reply('Friday GOLOSOVANIE');
         } else {
-            const username = ctx.message?.from?.username;
-            const firstName = ctx.message?.from?.first_name;
             const userDisplayName = username ? `@${username}` : firstName;
-
             const message = `${userDisplayName} started GOLOSOVANIE`;
             await ctx.reply(message);
         }
