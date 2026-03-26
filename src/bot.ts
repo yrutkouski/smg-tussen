@@ -31,7 +31,7 @@ bot.command('golosovanie', async (ctx: Context) => {
         const username = ctx.message?.from?.username;
         const firstName = ctx.message?.from?.first_name;
         
-        if (String(channelId) === String(SMG_CHANNEL_ID) && !(username && firstName)) {
+        if (String(channelId) === String(SMG_CHANNEL_ID) || !(username && firstName) || firstName === 'undefined') {
             await ctx.reply('Friday GOLOSOVANIE');
         } else {
             const userDisplayName = username ? `@${username}` : firstName;
